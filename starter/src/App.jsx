@@ -7,19 +7,25 @@ const App = () => {
   const [tours, setTours] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true)
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        setTours(data)
-        setIsLoading(false)
-      } catch (error) {
-        console.log('An error has occurred')
-        setIsLoading(false)
-      }
+  const removeTour = (id) => {
+    const newTours = tours.filter((tour) => tour.id !== id)
+    setTours(newTours)
+  }
+
+  const fetchData = async () => {
+    setIsLoading(true)
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      setTours(data)
+      setIsLoading(false)
+    } catch (error) {
+      console.log('An error has occurred')
+      setIsLoading(false)
     }
+  }
+
+  useEffect(() => {
     fetchData();
   }, [])
 
@@ -31,7 +37,7 @@ const App = () => {
 
     return (
       <main>
-        <Tours tours={tours} />
+        <Tours tours={tours} removeTour = {removeTour}/>
       </main>
     )
   
